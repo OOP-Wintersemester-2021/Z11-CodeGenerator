@@ -1,25 +1,70 @@
 import de.ur.mi.oop.app.GraphicsApp;
 import de.ur.mi.oop.colors.Color;
+import de.ur.mi.oop.graphics.Rectangle;
 import de.ur.mi.oop.launcher.GraphicsAppLauncher;
 
 public class CodeGenerator extends GraphicsApp {
 
-    private static final Color RED = new Color(234, 49, 63); // "Selbstgemischter" RGB-Farbe (rot)
     private static final Color YELLOW = new Color(234, 182, 56); // "Selbstgemischter" RGB-Farbe (gelb)
-    private static final Color GREEN = new Color(76, 149, 80); // "Selbstgemischter" RGB-Farbe (grün)
-    private static final Color BLUE = new Color(53, 129, 184); // "Selbstgemischter" RGB-Farbe (blau)
-    private static final Color TURQUOISE = new Color(9, 82, 86); // "Selbstgemischter" RGB-Farbe (türkis)
-    private static final Color PURPLE = new Color(55, 39, 114); // "Selbstgemischter" RGB-Farbe (lila)
-    private static final Color CREAM = new Color(241, 255, 250); // "Selbstgemischter" RGB-Farbe (creme)
     private static final Color GREY = new Color(47, 61, 76); // "Selbstgemischter" RGB-Farbe (grau)
+
+    private static final int WINDOW_WIDTH = 500;
+    private static final int WINDOW_HEIGHT = 500;
+    private static final Color BACKGROUND_COLOR = GREY;
+    private static final Color PIXEL_COLOR = YELLOW;
+    private static final int PIXEL_SIZE = 10;
+
+    private Rectangle[] pixels;
+
     @Override
     public void initialize() {
-        setCanvasSize(500, 500);
+        setCanvasSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        boolean[][] pixelMask = createPixelMask(getWidth(), getHeight());
+        pixels = createPixels(pixelMask);
+    }
+
+    private boolean[][] createPixelMask(int width, int height) {
+        boolean[][] pixelMask = new boolean[height][width];
+        for (int y = 0; y < pixelMask.length; y++) {
+            for (int x = 0; x < pixelMask[0].length; x++) {
+                pixelMask[y][x] = (Math.random() > 0.5);
+            }
+        }
+        return pixelMask;
+    }
+
+    private Rectangle[] createPixels(boolean[][] pixelMask) {
+        Rectangle[] pixels = new Rectangle[0];
+        for (int y = 0; y < pixelMask.length; y++) {
+            for (int x = 0; x < pixelMask[0].length; x++) {
+                boolean shouldDrawPixel = pixelMask[y][x];
+                if (shouldDrawPixel) {
+                    pixels = addNewPixelsTo(pixels, x * PIXEL_SIZE, y * PIXEL_SIZE);
+                }
+            }
+        }
+        return pixels;
+    }
+
+    private Rectangle[] addNewPixelsTo(Rectangle[] pixels, int xPos, int yPos) {
+        Rectangle[] expandedArray = new Rectangle[pixels.length + 1];
+        System.arraycopy(pixels, 0, expandedArray, 0, pixels.length);
+        Rectangle pixel = new Rectangle(xPos, yPos, PIXEL_SIZE, PIXEL_SIZE, PIXEL_COLOR);
+        pixel.setBorder(PIXEL_COLOR, 1);
+        expandedArray[expandedArray.length - 1] = pixel;
+        return expandedArray;
     }
 
     @Override
     public void draw() {
-        drawBackground(CREAM);
+        drawBackground(BACKGROUND_COLOR);
+        drawPixels(pixels);
+    }
+
+    private void drawPixels(Rectangle[] pixels) {
+        for (Rectangle pixel : pixels) {
+            pixel.draw();
+        }
     }
 
     public static void main(String[] args) {
