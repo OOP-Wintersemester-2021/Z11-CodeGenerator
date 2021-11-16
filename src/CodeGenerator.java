@@ -3,6 +3,14 @@ import de.ur.mi.oop.colors.Color;
 import de.ur.mi.oop.graphics.Rectangle;
 import de.ur.mi.oop.launcher.GraphicsAppLauncher;
 
+/**
+ * Diese Anwendung generiert ein zufälliges Pixelmuster. Dazu werden über ein zwei-dimensionales
+ * Array zufällige boolean-Werte erzeugt. Für jede Stelle mit einem "true"-Wert wird ein
+ * farbiges Rechteck erstellt. Dessen Position ergibt sich aus den "Koordinaten" des boolean-Arrays.
+ *
+ * Für eine "schönere" Darstellung werden die Pixel durch Rechtecke repräsentiert, die jeweils
+ * mehrere Pixel breit sind.
+ */
 public class CodeGenerator extends GraphicsApp {
 
     private static final Color YELLOW = new Color(234, 182, 56); // "Selbstgemischter" RGB-Farbe (gelb)
@@ -12,7 +20,7 @@ public class CodeGenerator extends GraphicsApp {
     private static final int WINDOW_HEIGHT = 500;
     private static final Color BACKGROUND_COLOR = GREY;
     private static final Color PIXEL_COLOR = YELLOW;
-    private static final int PIXEL_SIZE = 10;
+    private static final int PIXEL_SIZE = 10; // Breite und Höhe der "Pixel"
 
     private Rectangle[] pixels;
 
